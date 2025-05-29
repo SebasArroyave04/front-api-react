@@ -18,7 +18,7 @@ function Torneo() {
 
   const fetchTorneos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/tournament');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api//listar-torneos')
       if (response.status === 200) {
         setTorneos(response.data.data);
       }
@@ -28,7 +28,7 @@ function Torneo() {
   };
 
   const fetchVideojuegos = () => {
-    axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/listar-videojuegos')
+    axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/listar-videojuegos')
       .then((response) => setVideojuegos(response.data.data))
       .catch(error => console.error(error));
   };
@@ -56,7 +56,7 @@ function Torneo() {
     if (currentTorneo.id_torneo) {
       try {
         await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/actualizar-torneo/' + currentTorneo.id_torneo, data);
+          import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/actualizar-torneo/' + currentTorneo.id_torneo, data);
         toast("Actualización exitosa");
         setIsModalShow(false);
         fetchTorneos();
@@ -66,7 +66,7 @@ function Torneo() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/create-tournament/' + currentTorneo.videojuego_id,
+          import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/create-tournament/' + currentTorneo.videojuego_id,
           { ...data, premio: "Lo que sea" }
         );
         toast("Creación exitosa");
@@ -81,7 +81,7 @@ function Torneo() {
   const removeTorneo = async (torneo_id) => {
     if (confirm("Estas seguro que deseas borrar?")) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/eliminar-torneo/' + torneo_id);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/eliminar-torneo/' + torneo_id);
         toast("Eliminación exitosa");
         fetchTorneos();
       } catch (error) {
@@ -122,7 +122,7 @@ function Torneo() {
               </tr>
             </thead>
             <tbody>
-              {torneos.map(torneo => (
+              {Torneos.map(torneo => (
                 <tr key={torneo.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                   <td className="px-6">{torneo.nombre}</td>
                   <td className="px-6">{torneo.limite_equipos}</td>
