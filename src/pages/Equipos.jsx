@@ -4,87 +4,89 @@ import { LuPencil, LuTrash } from "react-icons/lu";
 import { EquiposModal } from '../components/EquiposModal';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 function Equipos() {
-  const [Equipos, setEquipos] = useState([]);
+  const [equipos, setEquipos] = useState([]);
   const [isModalShow, setIsModalShow] = useState(false);
-  const [currentEquipos, setCurrentEquipos] = useState({});
-  const [Jugadores, setJugadores] = useState([]);
-  const [Torneos, setTorneos] = useState([]);
+  const [currentEquipo, setCurrentEquipo] = useState({});
+  const [jugadores, setJugadores] = useState([]);
+  const [torneos, setTorneos] = useState([]);
+
+  const endpoint = import.meta.env.VITE_TORNEO_ENDPOINT;
 
   useEffect(() => {
     fetchEquipos();
     fetchJugadores();
     fetchTorneos();
-
   }, []);
 
   const fetchEquipos = async () => {
     try {
-     const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api//listar-equipos')
+      const response = await axios.get(endpoint + '/api/listar-equipos');
       if (response.status === 200) {
         setEquipos(response.data.data);
       }
     } catch (error) {
-      console.error("Error al cargar torneos", error);
+      console.error("Error al cargar equipos", error);
     }
   };
 
   const fetchJugadores = () => {
-    axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/listar-jugadores')
+    axios.get(endpoint + '/api/listar-jugadores')
       .then((response) => setJugadores(response.data.data))
       .catch(error => console.error(error));
   };
 
-  const setModalEditInfo = (Equipo) => {
-    setIsModalShow(true);
-    setCurrentEquipos(Equipos);
+  const fetchTorneos = () => {
+    axios.get(endpoint + '/api/listar-torneos')
+      .then((response) => setTorneos(response.data.data))
+      .catch(error => console.error(error));
   };
 
-  const handleChangeEquipos = (event) => {
-    setCurrentEquipos({
-      ...currentEquipos,
+  const setModalEditInfo = (equipo) => {
+    setIsModalShow(true);
+    setCurrentEquipo(equipo);
+  };
+
+  const handleChangeEquipo = (event) => {
+    setCurrentEquipo({
+      ...currentEquipo,
       [event.name]: event.value
     });
   };
 
-  const createOrUpdateEquipos = async () => {
+  const createOrUpdateEquipo = async () => {
     const data = {
-      nombre: currentEquipos.nombre,
-      lider_id: currentEquipos.lider_id,
-      torneo_id: currentEquipos.torneo_id,
-      jugadores: currentEquipos.jugadores
+      nombre: currentEquipo.nombre,
+      lider_id: currentEquipo.lider_id,
+      torneo_id: currentEquipo.torneo_id,
+      jugadores: currentEquipo.jugadores
     };
 
-    if (currentEquipos.equipo_id) {
+    if (currentEquipo.equipo_id) {
       try {
-        await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/actulizar-equipo/' + currentEquipos.equipo_id, data);
+        await axios.put(endpoint + '/api/actulizar-equipo/' + currentEquipo.equipo_id, data);
         toast("Actualización exitosa");
         setIsModalShow(false);
         fetchEquipos();
       } catch (error) {
-        console.error("Error al actualizar torneo", error);
+        console.error("Error al actualizar equipo", error);
       }
     } else {
       try {
-        await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/api/crearequipos/' + currentEquipos.jugadores + currentEquipos.torneo_id,
-          { ...data }
-        );
+        await axios.post(endpoint + '/api/crearequipos/' + currentEquipo.jugadores + currentEquipo.torneo_id, data);
         toast("Creación exitosa");
         setIsModalShow(false);
         fetchEquipos();
       } catch (error) {
-        console.error("Error al crear equipos", error);
+        console.error("Error al crear equipo", error);
       }
     }
   };
 
-  const removeEquipos = async (equipo_id) => {
-    if (confirm("Estas seguro que deseas borrar?")) {
+  const removeEquipo = async (equipo_id) => {
+    if (confirm("¿Estás seguro que deseas eliminar este equipo?")) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + 'http://127.0.0.1:8000/apieliminar-equipo/' + equipo_id);
+        await axios.delete(endpoint + '/api/eliminar-equipo/' + equipo_id);
         toast("Eliminación exitosa");
         fetchEquipos();
       } catch (error) {
@@ -93,50 +95,59 @@ function Equipos() {
     }
   };
 
-  const openTournamentModal = () => {
-    setCurrentEquipos({});
+  const openEquiposModal = () => {
+    setCurrentEquipo({});
     setIsModalShow(true);
   };
 
   return (
     <>
-      <EquiposTModal
-        Jugadores={Jugadores}
-        Torneos={Torneos}
-        Equipos={currentEquipos}
+      <EquiposModal
+        jugadores={jugadores}
+        torneos={torneos}
+        equipo={currentEquipo}
         isShow={isModalShow}
         onClose={() => setIsModalShow(false)}
-        onChangeEquipos={handleChangeEquipos}
-        onSubmit={createOrUpdateEquipos}
+        onChangeEquipo={handleChangeEquipo}
+        onSubmit={createOrUpdateEquipo}
       />
+
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-16 px-4">
-        <h1 className="text-4xl font-bold text-black mb-8">Torneos</h1>
-        <button className="bg-green-700 text-white rounded shadow-md p-2 my-4" onClick={openEquiposModal}>
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">Equipos de Torneos</h1>
+        <button className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md px-6 py-2 mb-6"
+          onClick={openEquiposModal}>
           Crear equipo
         </button>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+
+        <div className="relative overflow-x-auto shadow-lg rounded-lg w-full max-w-5xl">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-800 text-white">
               <tr>
                 <th className="px-6 py-3">Nombre del equipo</th>
-                <th className="px-6 py-3">Lider</th>
+                <th className="px-6 py-3">Líder</th>
                 <th className="px-6 py-3">Jugadores</th>
                 <th className="px-6 py-3">Torneo</th>
-                <th className="px-6 py-3"></th>
+                <th className="px-6 py-3 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {Equipos.map(Equipos => (
-                <tr key={Equipos.equipo_id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                  <td className="px-6">{Equipos.nombre}</td>
-                  <td className="px-6">{Equipos.lider_id}</td>
-                  <td className="px-6">{Equipos.Jugadores.nombre}</td>
-                  <td className="px-6">{Equipos.Torneos.nombre}</td>
-                  <td className="px-6">
-                    <button onClick={() => setModalEditInfo(torneo)} className="bg-blue-600 text-white rounded p-2 mr-2 my-2">
+              {equipos.map(equipo => (
+                <tr key={equipo.equipo_id} className="bg-white border-b hover:bg-gray-50">
+                  <td className="px-6 py-4">{equipo.nombre}</td>
+                  <td className="px-6 py-4">{equipo.lider_id}</td>
+                  <td className="px-6 py-4">{equipo.Jugadores?.nombre}</td>
+                  <td className="px-6 py-4">{equipo.Torneos?.nombre}</td>
+                  <td className="px-6 py-4 flex justify-center space-x-2">
+                    <button
+                      onClick={() => setModalEditInfo(equipo)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-2"
+                    >
                       <LuPencil />
                     </button>
-                    <button onClick={() => removeEquipos(Equipos.equipo_id)} className="bg-red-600 text-white rounded p-2 my-2">
+                    <button
+                      onClick={() => removeEquipo(equipo.equipo_id)}
+                      className="bg-red-600 hover:bg-red-700 text-white rounded-lg p-2"
+                    >
                       <LuTrash />
                     </button>
                   </td>
