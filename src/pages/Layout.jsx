@@ -65,6 +65,14 @@ const Layout = () => {
                   Jugadores
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/Equipos"
+                  className="block py-2 px-4 rounded-lg text-white hover:bg-green-600 transition"
+                >
+                  Equipos
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
