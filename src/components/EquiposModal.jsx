@@ -1,6 +1,6 @@
 export const EquiposModal = ({
-  Jugadores,
- Torneos,
+  jugadores,
+ torneos,
   isShow,
   onClose,
   onChangeEquipos,
@@ -39,7 +39,7 @@ export const EquiposModal = ({
               Nombre del equipo
             </label>
             <input
-              value={Equipos.nombre || ""}
+              value={equipos.nombre || ""}
               onInput={handleChange}
               type="text"
               id="nombre"
@@ -56,7 +56,7 @@ export const EquiposModal = ({
                 Lider
               </label>
               <input
-                value={Equipos.lider_id || ""}
+                value={equipos.lider_id || ""}
                 onInput={handleChange}
                 type="number"
                 id="lider_id"
@@ -71,7 +71,7 @@ export const EquiposModal = ({
                 Jugadores
               </label>
                <input
-                value={Equipos.Jugadores || ""}
+                value={equipos.jugadores || ""}
                 onInput={handleChange}
                 type="text"
                 id="jugadores"
@@ -87,7 +87,7 @@ export const EquiposModal = ({
               Torneo
             </label>
              <input
-                value={Equipos.Torneos || ""}
+                value={equipos.torneos || ""}
                 onInput={handleChange}
                 type="text"
                 id="torneo"

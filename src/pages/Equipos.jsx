@@ -21,7 +21,7 @@ function Equipos() {
 
   const fetchEquipos = async () => {
     try {
-      const response = await axios.get(endpoint + '/api/listar-equipos');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-equipos');
       if (response.status === 200) {
         setEquipos(response.data.data);
       }
@@ -30,18 +30,27 @@ function Equipos() {
     }
   };
 
-  const fetchJugadores = () => {
-    axios.get(endpoint + '/api/listar-jugadores')
-      .then((response) => setJugadores(response.data.data))
-      .catch(error => console.error(error));
+  const fetchJugadores = async () => {
+    try {
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-jugadores');
+      if (response.status === 200) {
+        setJugadores(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error al cargar jugadores", error);
+    }
   };
-
-  const fetchTorneos = () => {
-    axios.get(endpoint + '/api/listar-torneos')
-      .then((response) => setTorneos(response.data.data))
-      .catch(error => console.error(error));
+  
+  const fetchTorneos = async () => {
+    try {
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-torneos');
+      if (response.status === 200) {
+        setTorneos(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error al cargar torneos", error);
+    }
   };
-
   const setModalEditInfo = (equipo) => {
     setIsModalShow(true);
     setCurrentEquipo(equipo);
@@ -113,7 +122,7 @@ function Equipos() {
       />
 
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-16 px-4">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">Equipos de Torneos</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">Equipos </h1>
         <button className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md px-6 py-2 mb-6"
           onClick={openEquiposModal}>
           Crear equipo
@@ -135,8 +144,20 @@ function Equipos() {
                 <tr key={equipo.equipo_id} className="bg-white border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{equipo.nombre}</td>
                   <td className="px-6 py-4">{equipo.lider_id}</td>
-                  <td className="px-6 py-4">{equipo.Jugadores?.nombre}</td>
-                  <td className="px-6 py-4">{equipo.Torneos?.nombre}</td>
+                  <td className="px-6 py-4">
+
+                    <ul>
+                      {
+                        equipo.jugadores.map(jugador => (
+                          <li>
+                            {jugador.nombre}
+                          </li>
+                        ) )
+                      }
+                    </ul>
+
+                  </td>
+                  <td className="px-6 py-4">{equipo.torneos[0]?.nombre}</td>
                   <td className="px-6 py-4 flex justify-center space-x-2">
                     <button
                       onClick={() => setModalEditInfo(equipo)}

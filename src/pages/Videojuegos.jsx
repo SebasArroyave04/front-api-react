@@ -127,8 +127,8 @@ function VideoJuego() {
             <tbody>
               {videojuegos.length > 0 ? videojuegos.map((v) => (
                 <tr key={v.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800 border-b dark:border-gray-700">
-                  <td className='px-6 py-3'>{videojuegos.nombre}</td>
-                  <td className='px-6 py-3'>{videojuegos.tipo_videojuego}</td>
+                  <td className='px-6 py-3'>{v.nombre}</td>
+                  <td className='px-6 py-3'>{v.tipo.tipo}</td>
                   <td className='px-6 py-3'>
                     <button onClick={() => setModalEditInfo(v)} className='bg-blue-600 text-white rounded p-2 mr-2'><LuPencil /></button>
                     <button onClick={() => removeVideojuego(v.id)} className='bg-red-600 text-white rounded p-2'><LuTrash /></button>

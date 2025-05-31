@@ -57,8 +57,7 @@ function Jugadores() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/crearjugador/' + currentJugadores.id_jugador,
-        );
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/crearjugador' , data);
         toast("Creación exitosa");
         setIsModalShow(false);
         fetchJugadores();
