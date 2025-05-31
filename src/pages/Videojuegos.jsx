@@ -5,7 +5,7 @@ import { VideojuegoModal } from '../components/VideojuegoModal';
 import { ToastContainer, toast } from 'react-toastify';
 
 function VideoJuego() {
-  const [videojuegos, setVideojuegos] = useState([]);
+  const [videojuegos, setvideojuegos] = useState([]);
   const [tiposVideojuego, setTiposVideojuego] = useState([]);
   const [isModalShow, setIsModalShow] = useState(false);
   const [currentVideojuego, setCurrentVideojuego] = useState({});
@@ -17,10 +17,10 @@ function VideoJuego() {
 
   const fetchVideojuegos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/listar-videojuegos');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-videojuegos');
       if (response.status === 200) {
         console.log(response.data);
-        setVideojuegos(response.data.data);
+        setvideojuegos(response.data.data);
       }
     } catch (error) {
       console.error("Error al cargar videojuegos", error);
@@ -29,16 +29,16 @@ function VideoJuego() {
 
   const fetchTiposVideojuego = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/listar-tipo');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-tipo');
       setTiposVideojuego(response.data.data);
     } catch (error) {
       console.error("Error al cargar tipos", error);
     }
   };
 
-  const setModalEditInfo = (videojuego) => {
+  const setModalEditInfo = (videojuego_id) => {
     setIsModalShow(true);
-    setCurrentVideojuego(videojuego);
+    setCurrentVideojuego(videojuego_id);
   };
 
   const handleChangeVideojuego = (event) => {
@@ -57,7 +57,7 @@ function VideoJuego() {
     if (currentVideojuego.videojuego_id) {
       try {
         await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/actualizar-videojuego/' + currentVideojuego.videojuego_id, data
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/actualizar-videojuego/' + currentVideojuego.videojuego_id, data
         );
         toast("Actualización exitosa");
         setIsModalShow(false);
@@ -68,7 +68,7 @@ function VideoJuego() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/creategame/' + currentVideojuego.tipo_id,
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/creategame/' + currentVideojuego.tipo_id,
           { ...data, premio: "Lo que sea" }
         );
         toast("Creación exitosa");
@@ -84,7 +84,7 @@ function VideoJuego() {
     const isConfirm = confirm("¿Estás seguro que deseas borrar?");
     if (isConfirm) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/eliminar-videojuego/' + videojuegoId);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-videojuego/' + videojuegoId);
         toast("Eliminación exitosa");
         fetchVideojuegos();
       } catch (error) {

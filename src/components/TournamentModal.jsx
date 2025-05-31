@@ -97,7 +97,7 @@ export const TournamentModal = ({
             >
               <option value="">Selecciona un Videojuego</option>
               {videojuegos.map((v) => (
-                <option key={v.id} value={v.id}>
+                <option key={v.videojuego_id} value={v.videojuego_id}>
                   {v.nombre}
                 </option>
               ))}

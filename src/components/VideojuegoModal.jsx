@@ -64,7 +64,7 @@ export const VideojuegoModal = ({
             >
               <option value="">Selecciona un tipo de videojuego</option>
               {tiposVideojuego.map((tipo) => (
-                <option key={tipo.id} value={tipo.id}>
+                <option key={tipo.tipo_id} value={tipo.tipo_id}>
                   {tipo.nombre}
                 </option>
               ))}

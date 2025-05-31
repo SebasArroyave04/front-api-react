@@ -7,11 +7,11 @@ const Layout = () => {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/" className="flex items-center space-x-3">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sena_Colombia_logo.svg/1045px-Sena_Colombia_logo.svg.png"
+              src="https://acdn-us.mitiendanube.com/stores/001/471/169/themes/common/logo-188957454-1609033620-e6e4c01842ce98f7ebdcf8ac98d5896d1609033621.png?0"
               className="h-10"
               alt="Sena Logo"
             />
-            <span className="text-2xl font-bold text-white">Sena Torneos</span>
+            <span className="text-2xl font-bold text-white">GamerZone Torneos</span>
           </Link>
 
           <button

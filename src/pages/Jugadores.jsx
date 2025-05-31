@@ -5,7 +5,7 @@ import { JugadoresModal } from '../components/JugadoresModal';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Jugadores() {
-  const [Jugadores, setTJugadores] = useState([]);
+  const [Jugadores, setJugadores] = useState([]);
   const [isModalShow, setIsModalShow] = useState(false);
   const [currentJugadores, setCurrentJugadores] = useState({});
 
@@ -15,7 +15,7 @@ function Jugadores() {
 
   const fetchJugadores = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/listar-jugadores');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-jugadores');
       if (response.status === 200) {
         setJugadores(response.data.data);
       }
@@ -47,7 +47,7 @@ function Jugadores() {
     if (currentJugadores.id_jugador) {
       try {
         await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/actualizar-jugador/' + currentJugadores.id_jugador, data);
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/actualizar-jugador/' + currentJugadores.id_jugador, data);
         toast("Actualización exitosa");
         setIsModalShow(false);
         fetchJugadores();
@@ -57,7 +57,7 @@ function Jugadores() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/api/crearjugador/' + currentJugadores.id_jugador,
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/crearjugador/' + currentJugadores.id_jugador,
         );
         toast("Creación exitosa");
         setIsModalShow(false);
@@ -71,7 +71,7 @@ function Jugadores() {
   const removeJugadores = async (JugadoresId) => {
     if (confirm("Estas seguro que deseas borrar?")) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/api/eliminar-jugador/' + JugadoresId);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-jugador/' + JugadoresId);
         toast("Eliminación exitosa");
         fetchJugadores();
       } catch (error) {
