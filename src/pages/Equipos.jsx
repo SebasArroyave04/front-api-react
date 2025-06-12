@@ -21,7 +21,7 @@ function Equipos() {
 
   const fetchEquipos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-equipos');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-equipo');
       if (response.status === 200) {
         setEquipos(response.data.data);
       }
@@ -43,7 +43,7 @@ function Equipos() {
   
   const fetchTorneos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-torneos');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/tournament');
       if (response.status === 200) {
         setTorneos(response.data.data);
       }
@@ -66,14 +66,13 @@ function Equipos() {
   const createOrUpdateEquipo = async () => {
     const data = {
       nombre: currentEquipo.nombre,
-      lider_id: currentEquipo.lider_id,
-      torneo_id: currentEquipo.torneo_id,
-      jugadores: currentEquipo.jugadores
+      id_lider: currentEquipo.id_lider,
+
     };
 
-    if (currentEquipo.equipo_id) {
+    if (currentEquipo.id_equipo) {
       try {
-        await axios.put(endpoint + '/api/actulizar-equipo/' + currentEquipo.equipo_id, data);
+        await axios.put(endpoint + '/api/actulizar-equipo/' + currentEquipo.id_equipo, data);
         toast("Actualización exitosa");
         setIsModalShow(false);
         fetchEquipos();
@@ -82,7 +81,7 @@ function Equipos() {
       }
     } else {
       try {
-        await axios.post(endpoint + '/api/crearequipos/' + currentEquipo.jugadores + currentEquipo.torneo_id, data);
+        await axios.post(endpoint + '/api/crearequipos/' + currentEquipo.jugadores + currentEquipo.id_torneo, data);
         toast("Creación exitosa");
         setIsModalShow(false);
         fetchEquipos();
@@ -92,10 +91,10 @@ function Equipos() {
     }
   };
 
-  const removeEquipo = async (equipo_id) => {
+  const removeEquipo = async (id_equipo) => {
     if (confirm("¿Estás seguro que deseas eliminar este equipo?")) {
       try {
-        await axios.delete(endpoint + '/api/eliminar-equipo/' + equipo_id);
+        await axios.delete(endpoint + '/api/eliminar-equipo/' + id_equipo);
         toast("Eliminación exitosa");
         fetchEquipos();
       } catch (error) {
@@ -134,18 +133,15 @@ function Equipos() {
               <tr>
                 <th className="px-6 py-3">Nombre del equipo</th>
                 <th className="px-6 py-3">Líder</th>
-                <th className="px-6 py-3">Jugadores</th>
-                <th className="px-6 py-3">Torneo</th>
-                <th className="px-6 py-3 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {equipos.map(equipo => (
                 <tr key={equipo.equipo_id} className="bg-white border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{equipo.nombre}</td>
-                  <td className="px-6 py-4">{equipo.lider_id}</td>
+                  <td className="px-6 py-4">{equipo.id_lider}</td>
+                   <td className="px-6 py-4">{equipo.id_jugador}</td>
                   <td className="px-6 py-4">
-
                     <ul>
                       {
                         equipo.jugadores.map(jugador => (
@@ -157,7 +153,7 @@ function Equipos() {
                     </ul>
 
                   </td>
-                  <td className="px-6 py-4">{equipo.torneos[0]?.nombre}</td>
+                  <td className="px-6 py-4">{equipo.torneos[0].nombre}</td>
                   <td className="px-6 py-4 flex justify-center space-x-2">
                     <button
                       onClick={() => setModalEditInfo(equipo)}
@@ -182,5 +178,6 @@ function Equipos() {
     </>
   );
 }
+
 
 export default Equipos;

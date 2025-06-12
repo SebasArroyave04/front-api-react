@@ -39,7 +39,7 @@ function Jugadores() {
   const createOrUpdateJugadores = async () => {
     const data = {
       nombre: currentJugadores.nombre,
-      nickname: currentJugadores.nickname,
+      nikename: currentJugadores.nikename,
       correo: currentJugadores.correo,
       pais: currentJugadores.pais
     };
@@ -57,7 +57,7 @@ function Jugadores() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/crearjugador' , data);
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/crear-jugador' , data);
         toast("Creación exitosa");
         setIsModalShow(false);
         fetchJugadores();
@@ -67,10 +67,10 @@ function Jugadores() {
     }
   };
 
-  const removeJugadores = async (JugadoresId) => {
+  const removeJugadores = async (id_jugador) => {
     if (confirm("Estas seguro que deseas borrar?")) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-jugador/' + JugadoresId);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-jugador/' + id_jugador);
         toast("Eliminación exitosa");
         fetchJugadores();
       } catch (error) {
@@ -113,7 +113,7 @@ function Jugadores() {
               {Jugadores.map(Jugadores => (
                 <tr key={Jugadores.id_jugador} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                   <td className="px-6">{Jugadores.nombre}</td>
-                  <td className="px-6">{Jugadores.nickname}</td>
+                  <td className="px-6">{Jugadores.nikename}</td>
                   <td className="px-6">{Jugadores.correo}</td>
                   <td className="px-6">{Jugadores.pais}</td>
                   <td className="px-6">

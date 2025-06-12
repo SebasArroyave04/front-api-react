@@ -18,7 +18,7 @@ function Torneo() {
 
   const fetchTorneos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-torneos')
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/tournament')
       if (response.status === 200) {
         setTorneos(response.data.data);
       }
@@ -28,7 +28,7 @@ function Torneo() {
   };
 
   const fetchVideojuegos = () => {
-    axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-videojuegos')
+    axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-juego')
       .then((response) => setVideojuegos(response.data.data))
       .catch(error => console.error(error));
   };
@@ -48,15 +48,18 @@ function Torneo() {
   const createOrUpdateTorneo = async () => {
     const data = {
       nombre: currentTorneo.nombre,
+      premio: currentTorneo.premio,
+      fecha_inicio: currentTorneo.fecha_inicio,
+      fecha_fin: currentTorneo.fecha_fin,
       limite_equipos: currentTorneo.limite_equipos,
-      modalidad: currentTorneo.modalidad,
-      videojuego_id: currentTorneo.videojuego_id
+      id_modalidad: currentTorneo.id_modalidad,
+      id_videojuego: currentTorneo.id_videojuego
     };
 
     if (currentTorneo.id_torneo) {
       try {
         await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/actualizar-torneo/' + currentTorneo.id_torneo, data);
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/actulizar-tournament/' + currentTorneo.id_torneo, data);
         toast("Actualización exitosa");
         setIsModalShow(false);
         fetchTorneos();
@@ -78,10 +81,10 @@ function Torneo() {
     }
   };
 
-  const removeTorneo = async (torneo_id) => {
+  const removeTorneo = async (id_torneo) => {
     if (confirm("Estas seguro que deseas borrar?")) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-torneo/' + currentTorneo.videojuego_id);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-tournament/' + currentTorneo.id_videojuego);
         toast("Eliminación exitosa");
         fetchTorneos();
       } catch (error) {
@@ -115,6 +118,9 @@ function Torneo() {
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="px-6 py-3">Nombre del torneo</th>
+                <th className="px-6 py-3">Premio</th>
+                <th className="px-6 py-3">Fecha Inicio</th>
+                <th className="px-6 py-3">Fecha fin</th>
                 <th className="px-6 py-3">Límite de jugadores</th>
                 <th className="px-6 py-3">Modalidad</th>
                 <th className="px-6 py-3">Videojuego</th>
@@ -125,14 +131,17 @@ function Torneo() {
               {Torneos.map(torneo => (
                 <tr key={torneo.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                   <td className="px-6">{torneo.nombre}</td>
+                  <td className="px-6">{torneo.premio}</td>
+                  <td className="px-6">{torneo.fecha_inicio}</td>
+                  <td className="px-6">{torneo.fecha_fin}</td>
                   <td className="px-6">{torneo.limite_equipos}</td>
-                  <td className="px-6">{torneo.modalidad}</td>
+                  <td className="px-6">{torneo.id_modalidad}</td>
                   <td className="px-6">{torneo.videojuego.nombre}</td>
                   <td className="px-6">
                     <button onClick={() => setModalEditInfo(torneo)} className="bg-blue-600 text-white rounded p-2 mr-2 my-2">
                       <LuPencil />
                     </button>
-                    <button onClick={() => removeTorneo(torneo.torneo_id)} className="bg-red-600 text-white rounded p-2 my-2">
+                    <button onClick={() => removeTorneo(torneo.id_torneo)} className="bg-red-600 text-white rounded p-2 my-2">
                       <LuTrash />
                     </button>
                   </td>

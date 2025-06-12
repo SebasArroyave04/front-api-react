@@ -17,7 +17,7 @@ function VideoJuego() {
 
   const fetchVideojuegos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-videojuegos');
+      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-juego');
       if (response.status === 200) {
         console.log(response.data);
         setvideojuegos(response.data.data);
@@ -36,9 +36,9 @@ function VideoJuego() {
     }
   };
 
-  const setModalEditInfo = (videojuego_id) => {
+  const setModalEditInfo = (id_videojuego) => {
     setIsModalShow(true);
-    setCurrentVideojuego(videojuego_id);
+    setCurrentVideojuego(id_videojuego);
   };
 
   const handleChangeVideojuego = (event) => {
@@ -51,13 +51,13 @@ function VideoJuego() {
   const createOrUpdateVideojuego = async () => {
     const data = {
       nombre: currentVideojuego.nombre,
-      tipo_id: currentVideojuego.tipo_id,
+      id_tipo_videojuego: currentVideojuego.id_tipo_videojuego,
     };
 
-    if (currentVideojuego.videojuego_id) {
+    if (currentVideojuego.id_videojuego) {
       try {
         await axios.put(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/actualizar-videojuego/' + currentVideojuego.videojuego_id, data
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/actualizar-videojuego/' + currentVideojuego.id_videojuego, data
         );
         toast("Actualización exitosa");
         setIsModalShow(false);
@@ -68,7 +68,7 @@ function VideoJuego() {
     } else {
       try {
         await axios.post(
-          import.meta.env.VITE_TORNEO_ENDPOINT + '/creategame/' + currentVideojuego.tipo_id,
+          import.meta.env.VITE_TORNEO_ENDPOINT + '/crear-juego/' + currentVideojuego.id_tipo_videojuego,
           { ...data, premio: "Lo que sea" }
         );
         toast("Creación exitosa");
@@ -80,11 +80,11 @@ function VideoJuego() {
     }
   };
 
-  const removeVideojuego = async (videojuegoId) => {
+  const removeVideojuego = async (id_tipo_videojuego) => {
     const isConfirm = confirm("¿Estás seguro que deseas borrar?");
     if (isConfirm) {
       try {
-        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-videojuego/' + videojuegoId);
+        await axios.delete(import.meta.env.VITE_TORNEO_ENDPOINT + '/eliminar-videojuego/' + id_tipo_videojuego);
         toast("Eliminación exitosa");
         fetchVideojuegos();
       } catch (error) {

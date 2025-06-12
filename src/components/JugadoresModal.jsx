@@ -55,11 +55,11 @@ export const JugadoresModal = ({
                 Nickname
               </label>
               <input
-                value={Jugadores.nickname || ""}
+                value={Jugadores.nikename || ""}
                 onInput={handleChange}
                 type="text"
-                id="nickname"
-                name="nickname"
+                id="nikename"
+                name="nikename"
                 className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                 required
               />

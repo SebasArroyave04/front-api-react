@@ -51,20 +51,20 @@ export const VideojuegoModal = ({
           </div>
 
           <div>
-            <label htmlFor="tipo_id" className="block text-sm font-medium text-gray-700 dark:text-white">
+            <label htmlFor="id_tipo_videojuego" className="block text-sm font-medium text-gray-700 dark:text-white">
               Tipo de videojuego
             </label>
             <select
-              value={videojuego.tipo_id || ""}
+              value={videojuego.id_tipo_videojuego || ""}
               onChange={handleChange}
-              id="tipo_id"
-              name="tipo_id"
+              id="id_tipo_videojuego"
+              name="id_tipo_videojuego"
               className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
               required
             >
               <option value="">Selecciona un tipo de videojuego</option>
               {tiposVideojuego.map((tipo) => (
-                <option key={tipo.tipo_id} value={tipo.tipo_id}>
+                <option key={tipo.id_tipo_videojuego} value={tipo.id_tipo_videojuego}>
                   {tipo.nombre}
                 </option>
               ))}

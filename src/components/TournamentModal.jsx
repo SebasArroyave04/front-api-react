@@ -50,6 +50,54 @@ export const TournamentModal = ({
             />
           </div>
 
+          <div>
+            <label htmlFor="premio" className="block text-sm font-medium text-gray-700 dark:text-white">
+              premio
+            </label>
+            <input
+              value={torneo.premio || ""}
+              onInput={handleChange}
+              type="text"
+              id="premio"
+              name="premio"
+              placeholder="premio"
+              className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="fecha_inicio" className="block text-sm font-medium text-gray-700 dark:text-white">
+              fecha_inicio
+            </label>
+            <input
+              value={torneo.fecha_inicio || ""}
+              onInput={handleChange}
+              type="text"
+              id="fecha_inicio"
+              name="fecha_inicio"
+              placeholder="fecha_inicio"
+              className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              required
+            />
+          </div>
+
+             <div>
+            <label htmlFor="fecha_fin" className="block text-sm font-medium text-gray-700 dark:text-white">
+              fecha_fin
+            </label>
+            <input
+              value={torneo.fecha_fin || ""}
+              onInput={handleChange}
+              type="text"
+              id="fecha_fin"
+              name="fecha_fin"
+              placeholder="fecha_fin"
+              className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              required
+            />
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label htmlFor="limite_equipos" className="block text-sm font-medium text-gray-700 dark:text-white">
