@@ -21,7 +21,7 @@ function Equipos() {
 
   const fetchEquipos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-equipo');
+      const response = await axios.get(endpoint + '/listar-equipo');
       if (response.status === 200) {
         setEquipos(response.data.data);
       }
@@ -32,7 +32,7 @@ function Equipos() {
 
   const fetchJugadores = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/listar-jugadores');
+      const response = await axios.get(endpoint + '/listar-jugadores');
       if (response.status === 200) {
         setJugadores(response.data.data);
       }
@@ -43,7 +43,7 @@ function Equipos() {
   
   const fetchTorneos = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_TORNEO_ENDPOINT + '/tournament');
+      const response = await axios.get(endpoint + '/tournament');
       if (response.status === 200) {
         setTorneos(response.data.data);
       }
@@ -51,6 +51,7 @@ function Equipos() {
       console.error("Error al cargar torneos", error);
     }
   };
+
   const setModalEditInfo = (equipo) => {
     setIsModalShow(true);
     setCurrentEquipo(equipo);
@@ -64,37 +65,37 @@ function Equipos() {
   };
 
   const createOrUpdateEquipo = async () => {
-    const data = {
-      nombre: currentEquipo.nombre,
-      id_lider: currentEquipo.id_lider,
-
-    };
-
-    if (currentEquipo.id_equipo) {
-      try {
-        await axios.put(endpoint + '/api/actulizar-equipo/' + currentEquipo.id_equipo, data);
-        toast("Actualización exitosa");
-        setIsModalShow(false);
-        fetchEquipos();
-      } catch (error) {
-        console.error("Error al actualizar equipo", error);
-      }
-    } else {
-      try {
-        await axios.post(endpoint + '/api/crearequipos/' + currentEquipo.jugadores + currentEquipo.id_torneo, data);
-        toast("Creación exitosa");
-        setIsModalShow(false);
-        fetchEquipos();
-      } catch (error) {
-        console.error("Error al crear equipo", error);
-      }
-    }
+  const data = {
+    nombre: currentEquipo.nombre,
+    id_lider: currentEquipo.id_lider,
   };
+
+  if (currentEquipo.id_equipo) {
+    try {
+      await axios.put(endpoint + '/actulizar-equipo/' + currentEquipo.id_equipo, data);
+      toast("Actualización exitosa");
+      setIsModalShow(false);
+      fetchEquipos();
+    } catch (error) {
+      console.error("Error al actualizar equipo", error);
+    }
+  } else {
+    try {
+      // Asegúrate de que la URL esté correctamente formada
+      await axios.post(endpoint + '/crear-equipo' + currentEquipo.jugadores + '/' + currentEquipo.id_torneo, data);
+      toast("Creación exitosa");
+      setIsModalShow(false);
+      fetchEquipos();
+    } catch (error) {
+      console.error("Error al crear equipo", error);
+    }
+  }
+};
 
   const removeEquipo = async (id_equipo) => {
     if (confirm("¿Estás seguro que deseas eliminar este equipo?")) {
       try {
-        await axios.delete(endpoint + '/api/eliminar-equipo/' + id_equipo);
+        await axios.delete(endpoint + '/actulizar-equipo/' + id_equipo);
         toast("Eliminación exitosa");
         fetchEquipos();
       } catch (error) {
@@ -121,7 +122,7 @@ function Equipos() {
       />
 
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-16 px-4">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">Equipos </h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">Equipos</h1>
         <button className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md px-6 py-2 mb-6"
           onClick={openEquiposModal}>
           Crear equipo
@@ -133,6 +134,9 @@ function Equipos() {
               <tr>
                 <th className="px-6 py-3">Nombre del equipo</th>
                 <th className="px-6 py-3">Líder</th>
+                <th className="px-6 py-3">Jugadores</th>
+                <th className="px-6 py-3">Torneo</th>
+                <th className="px-6 py-3">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -140,20 +144,14 @@ function Equipos() {
                 <tr key={equipo.equipo_id} className="bg-white border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{equipo.nombre}</td>
                   <td className="px-6 py-4">{equipo.id_lider}</td>
-                   <td className="px-6 py-4">{equipo.id_jugador}</td>
                   <td className="px-6 py-4">
                     <ul>
-                      {
-                        equipo.jugadores.map(jugador => (
-                          <li>
-                            {jugador.nombre}
-                          </li>
-                        ) )
-                      }
+                      {equipo.jugadores.map(jugador => (
+                        <li key={jugador.id}>{jugador.nombre}</li> // Asegúrate de tener una clave única
+                      ))}
                     </ul>
-
                   </td>
-                  <td className="px-6 py-4">{equipo.torneos[0].nombre}</td>
+                  <td className="px-6 py-4">{equipo.torneos && equipo.torneos.length > 0 ? equipo.torneos[0].nombre : 'Sin torneo'}</td>
                   <td className="px-6 py-4 flex justify-center space-x-2">
                     <button
                       onClick={() => setModalEditInfo(equipo)}
@@ -179,5 +177,4 @@ function Equipos() {
   );
 }
 
-
-export default Equipos;
+export default Equipos;

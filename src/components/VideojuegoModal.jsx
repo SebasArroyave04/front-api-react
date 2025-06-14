@@ -39,7 +39,7 @@ export const VideojuegoModal = ({
               Nombre del videojuego
             </label>
             <input
-              value={videojuego.nombre}
+              value={video_juegos.nombre}
               onChange={handleChange}
               type="text"
               id="nombre"
@@ -55,7 +55,7 @@ export const VideojuegoModal = ({
               Tipo de videojuego
             </label>
             <select
-              value={videojuego.id_tipo_videojuego || ""}
+              value={video_juegos.id_tipo_videojuego || ""}
               onChange={handleChange}
               id="id_tipo_videojuego"
               name="id_tipo_videojuego"

@@ -1,15 +1,16 @@
 export const EquiposModal = ({
   jugadores,
- torneos,
+  torneos,
+  equipo, // Cambié de equipos a equipo
   isShow,
   onClose,
-  onChangeEquipos,
+  onChangeEquipo,
   onSubmit
 }) => {
   if (!isShow) return null;
 
   const handleChange = (event) => {
-    onChangeEquipos({
+    onChangeEquipo({
       name: event.target.name,
       value: event.target.value
     });
@@ -39,7 +40,7 @@ export const EquiposModal = ({
               Nombre del equipo
             </label>
             <input
-              value={equipos.nombre || ""}
+              value={equipo.nombre || ""} // Cambié de equipos.nombre a equipo.nombre
               onInput={handleChange}
               type="text"
               id="nombre"
@@ -52,11 +53,11 @@ export const EquiposModal = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="lider" className="block text-sm font-medium text-gray-700 dark:text-white">
-                Lider
+              <label htmlFor="lider_id" className="block text-sm font-medium text-gray-700 dark:text-white">
+                Líder
               </label>
               <input
-                value={equipos.lider_id || ""}
+                value={equipo.lider_id || ""} // Cambié de equipos.lider_id a equipo.lider_id
                 onInput={handleChange}
                 type="number"
                 id="lider_id"
@@ -70,8 +71,8 @@ export const EquiposModal = ({
               <label htmlFor="jugadores" className="block text-sm font-medium text-gray-700 dark:text-white">
                 Jugadores
               </label>
-               <input
-                value={equipos.jugadores || ""}
+              <input
+                value={equipo.jugadores || ""} // Cambié de equipos.jugadores a equipo.jugadores
                 onInput={handleChange}
                 type="text"
                 id="jugadores"
@@ -86,15 +87,15 @@ export const EquiposModal = ({
             <label htmlFor="torneo" className="block text-sm font-medium text-gray-700 dark:text-white">
               Torneo
             </label>
-             <input
-                value={equipos.torneos || ""}
-                onInput={handleChange}
-                type="text"
-                id="torneo"
-                name="torneo"
-                className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                required
-              />
+            <input
+              value={equipo.torneo || ""} // By me
+              onInput={handleChange}
+              type="text"
+              id="torneo"
+              name="torneo"
+              className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+              required
+            />
           </div>
 
           <button
@@ -113,6 +114,6 @@ export const EquiposModal = ({
           </button>
         </form>
       </div>
-    </div>
-  );
+    </div>
+  );
 };
